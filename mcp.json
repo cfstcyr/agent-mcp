@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "bmi_mcp_server": {
-      "command": "mcp-proxy",
-      "args": ["http://127.0.0.1:8000/v1/mcp"]
-    }
-  }
-}
