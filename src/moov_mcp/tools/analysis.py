@@ -2,28 +2,84 @@ import datetime
 import random
 
 from fastmcp import FastMCP
+from pydantic import BaseModel, Field
 
-from moov_mcp.models.analysis import SentimentAnalysisResult
+
+class SentimentAnalysisResult(BaseModel):
+    """
+    Represents the result of a sentiment analysis.
+    """
+
+    sentiment: float = Field(
+        ...,
+        description="The sentiment of the text. A value between -1 and 1, where -1 indicates negative sentiment, 0 indicates neutral sentiment, and 1 indicates positive sentiment.",
+    )
+    confidence: float = Field(
+        ...,
+        description="The confidence score of the sentiment analysis. A float between 0 and 1, indicating the model's confidence in the sentiment score.",
+    )
+
 
 analysis_mcp = FastMCP(name="Analysis")
 
 FEATURED_PRODUCTS = [
-    "iPhone 15 Pro", "MacBook Air M3", "Samsung Galaxy S24", "Google Pixel 8", "iPad Pro M2",
-    "Dell XPS 13", "Surface Pro 9", "AirPods Pro 2", "Sony WH-1000XM5", "Tesla Model Y",
-    "Nintendo Switch OLED", "Steam Deck", "Meta Quest 3", "Apple Watch Series 9", "Garmin Fenix 7",
-    "DJI Mini 4 Pro", "GoPro Hero 12", "Canon EOS R5", "Sony A7 IV", "Framework Laptop",
-    "Asus ROG Ally", "MSI Gaming Laptop", "NVIDIA RTX 4090", "AMD Ryzen 9 7950X", "Intel Core i9-13900K",
-    "Samsung QN90C TV", "LG C3 OLED", "Sonos Era 300", "Amazon Echo Show 15", "Google Nest Hub Max",
-    "Ring Video Doorbell", "Nest Thermostat", "Philips Hue Bridge", "Razer DeathAdder V3", "Logitech MX Master 3S",
-    "Corsair K100 RGB", "HyperX Cloud Alpha", "Elgato Stream Deck", "Anker PowerCore", "MagSafe Charger",
-    "Samsung Galaxy Buds2 Pro", "Nothing Phone 2", "OnePlus 11", "Xiaomi 13 Pro", "Huawei P60 Pro",
-    "Surface Laptop 5", "ThinkPad X1 Carbon", "Alienware Aurora R15", "HP Spectre x360", "Asus ZenBook Pro"
+    "iPhone 15 Pro",
+    "MacBook Air M3",
+    "Samsung Galaxy S24",
+    "Google Pixel 8",
+    "iPad Pro M2",
+    "Dell XPS 13",
+    "Surface Pro 9",
+    "AirPods Pro 2",
+    "Sony WH-1000XM5",
+    "Tesla Model Y",
+    "Nintendo Switch OLED",
+    "Steam Deck",
+    "Meta Quest 3",
+    "Apple Watch Series 9",
+    "Garmin Fenix 7",
+    "DJI Mini 4 Pro",
+    "GoPro Hero 12",
+    "Canon EOS R5",
+    "Sony A7 IV",
+    "Framework Laptop",
+    "Asus ROG Ally",
+    "MSI Gaming Laptop",
+    "NVIDIA RTX 4090",
+    "AMD Ryzen 9 7950X",
+    "Intel Core i9-13900K",
+    "Samsung QN90C TV",
+    "LG C3 OLED",
+    "Sonos Era 300",
+    "Amazon Echo Show 15",
+    "Google Nest Hub Max",
+    "Ring Video Doorbell",
+    "Nest Thermostat",
+    "Philips Hue Bridge",
+    "Razer DeathAdder V3",
+    "Logitech MX Master 3S",
+    "Corsair K100 RGB",
+    "HyperX Cloud Alpha",
+    "Elgato Stream Deck",
+    "Anker PowerCore",
+    "MagSafe Charger",
+    "Samsung Galaxy Buds2 Pro",
+    "Nothing Phone 2",
+    "OnePlus 11",
+    "Xiaomi 13 Pro",
+    "Huawei P60 Pro",
+    "Surface Laptop 5",
+    "ThinkPad X1 Carbon",
+    "Alienware Aurora R15",
+    "HP Spectre x360",
+    "Asus ZenBook Pro",
 ]
+
 
 @analysis_mcp.tool()
 def get_featured_products() -> list[str]:
     """Get a list of the current featured products.
-    
+
     Returns:
         list: A list of featured products.
     """

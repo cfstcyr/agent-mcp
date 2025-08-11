@@ -1,15 +1,14 @@
-from pathlib import Path
 
+import aiofiles
 from langchain_mcp_adapters.client import MultiServerMCPClient, StreamableHttpConnection
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt import create_react_agent
 
-from moov_agent.llm_models import llm_model
-from moov_core.settings import Settings, get_settings
+from moov_core.settings import Settings
 
 
 async def create_agent(
-    settings: Settings = get_settings(),
+    settings: Settings,
 ) -> CompiledStateGraph:
     client = MultiServerMCPClient(
         {
@@ -21,12 +20,12 @@ async def create_agent(
     )
     tools = await client.get_tools()
 
-    with Path.open(settings.prompts.steering_agent_system_prompt) as f:
-        system_prompt = f.read()
+    async with aiofiles.open(settings.prompts.steering_agent_system_prompt) as f:
+        system_prompt = await f.read()
 
     return create_react_agent(
         tools=tools,
-        model=llm_model,
+        model=settings.llm.init_model(),
         prompt=system_prompt,
         name="default",
     )

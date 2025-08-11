@@ -1,6 +1,10 @@
+import logging
+
 from fastmcp import FastMCP
 
 from .tools import analysis_mcp
+
+log = logging.getLogger(__name__)
 
 
 async def create_mcp() -> FastMCP:
@@ -9,6 +13,6 @@ async def create_mcp() -> FastMCP:
     await mcp.import_server(analysis_mcp)
 
     tools = await mcp.get_tools()
-    print(f"Registered tools: {', '.join(tool for tool in tools)}")
+    log.info("Registered tools: %s", tools)
 
     return mcp
