@@ -115,3 +115,39 @@ def sentiment_analysis(
         )
         for _ in range(n_results)
     ]
+
+
+# SAMPLING NOT YET SUPPORTED BY LANGGRAPH
+# @analysis_mcp.tool()
+# async def consumer_report(
+#     product: str,
+#     sentiment_analysis_results: list[SentimentAnalysisResult],
+#     ctx: Context,
+# ) -> str:
+#     """Generate a consumer report for a product based on sentiment analysis results.
+
+#     Args:
+#         product (str): The name of the product.
+#         sentiment_analysis_results (list[SentimentAnalysisResult]): The sentiment analysis results.
+#         ctx (Context): The context for the tool execution.
+
+#     Raises:
+#         ValueError: If the result is not of type TextContent.
+
+#     Returns:
+#         str: A consumer report summarizing the sentiment analysis.
+#     """
+#     result = await ctx.sample(f"""
+#     Generating consumer report for {product} with {len(sentiment_analysis_results)} sentiment analysis results.
+
+#     You must return a complete report in markdown format, including:
+#     - Average sentiment score
+#     - Average confidence score
+#     - A brief summary of the product's sentiment
+#     - Any notable trends or insights from the sentiment analysis results
+#     - A conclusion or recommendation based on the sentiment analysis results
+#     """)
+
+#     if isinstance(result, TextContent):
+#         return result.text
+#     raise ValueError("Expected a TextContent result from the consumer report tool.")
