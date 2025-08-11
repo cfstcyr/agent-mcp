@@ -13,8 +13,7 @@ from moov_mcp import create_mcp
 def create_container(settings: Settings) -> Container:
     return (
         Container()
-        .register("settings", settings)
-        .register("agent", AgentService(settings).register("default", create_agent))
+        .register(AgentService(settings).register("default", create_agent))
     )
 
 

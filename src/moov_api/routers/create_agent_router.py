@@ -13,7 +13,7 @@ def create_agent_router(agent_name: str) -> APIRouter:
     @router.post("/response")
     async def response(
         body: AgentRequestBody,
-        agent_service: AgentService = Depends(Container.depend_on("agent")),
+        agent_service = Container.depends_on(AgentService),
     ):
         agent = await agent_service.get_agent(agent_name)
         res = await agent.ainvoke(
@@ -30,7 +30,7 @@ def create_agent_router(agent_name: str) -> APIRouter:
     async def stream(
         request: Request,
         body: AgentRequestBody,
-        agent_service: AgentService = Depends(Container.depend_on("agent")),
+        agent_service = Container.depends_on(AgentService),
     ):
         agent = await agent_service.get_agent(agent_name)
 
