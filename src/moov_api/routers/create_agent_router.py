@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+from langchain_core.messages import AIMessageChunk
+from starlette.responses import StreamingResponse
 
 from moov_api.container import Container
 from moov_api.models.agent import AgentRequestBody, AgentRequestResponse
@@ -23,5 +25,27 @@ def create_agent_router(agent_name: str) -> APIRouter:
         return AgentRequestResponse(
             output=res["messages"],
         )
+
+    @router.post("/stream")
+    async def stream(
+        request: Request,
+        body: AgentRequestBody,
+        agent_service: AgentService = Depends(Container.depend_on("agent")),
+    ):
+        agent = await agent_service.get_agent(agent_name)
+        
+        async def gen():
+            for message, _ in agent.stream(
+                {
+                    "messages": body.get_input(),
+                },
+                stream_mode="messages"
+            ):
+                if await request.is_disconnected():
+                    break
+                if isinstance(message, AIMessageChunk):
+                    yield message.model_dump_json()
+
+        return StreamingResponse(gen(), media_type="text/event-stream")
 
     return router
