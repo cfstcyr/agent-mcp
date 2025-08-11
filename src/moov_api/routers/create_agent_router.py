@@ -33,13 +33,13 @@ def create_agent_router(agent_name: str) -> APIRouter:
         agent_service: AgentService = Depends(Container.depend_on("agent")),
     ):
         agent = await agent_service.get_agent(agent_name)
-        
+
         async def gen():
             for message, _ in agent.stream(
                 {
                     "messages": body.get_input(),
                 },
-                stream_mode="messages"
+                stream_mode="messages",
             ):
                 if await request.is_disconnected():
                     break
